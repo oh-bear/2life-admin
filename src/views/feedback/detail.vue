@@ -23,8 +23,8 @@
         </div>
       </div>
     </el-card>
-    <div class="comments" v-if="detail.comments">
-      <el-card v-for="(item, index) in comments" class="item">
+    <div v-if="detail.comments" class="comments">
+      <el-card v-for="(item, index) in comments" :key="index" class="item">
         <div class="user">
           <img :src="item.user.avatar_url">
           <div>
@@ -41,6 +41,12 @@
         </div>
       </el-card>
     </div>
+    <div class="create">
+      <el-input :autosize="{ minRows: 6, maxRows: 999}" v-model="content" type="textarea" placeholder="请输入内容"></el-input>
+      <div class="btn" @click="commit">
+        提交
+      </div>
+    </div>
   </div>
 </template>
 
@@ -49,6 +55,12 @@ import { mapGetters } from 'vuex'
 import { parseTime } from '@/utils/index.js'
 
 export default {
+  data() {
+    return {
+      comments: [],
+      content: ''
+    }
+  },
   computed: {
     ...mapGetters({
       list: 'feedback'
@@ -67,11 +79,6 @@ export default {
       }
     }
   },
-  data() {
-    return {
-      comments: []
-    }
-  },
   mounted() {
     console.log(this.info)
     this.getComments()
@@ -86,6 +93,9 @@ export default {
         this.comments = data
         console.log(data)
       })
+    },
+    commit() {
+      console.log(this.content)
     }
   }
 }
@@ -133,5 +143,18 @@ export default {
 
 .comments {
   margin-top: 20px;
+}
+
+.create {
+  margin: 20px 0;
+
+  .btn {
+    float: right;
+    margin: 20px 10px;
+    padding: 10px 30px;
+    border-radius: 10px;
+    color: white;
+    background: #28a745;
+  }
 }
 </style>
