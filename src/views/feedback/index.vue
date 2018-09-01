@@ -48,6 +48,7 @@ export default {
   margin-top: 20px;
 
   .card-container {
+    position: relative;
     display: flex;
     align-items: center;
 

@@ -17,6 +17,7 @@
               {{ info.date }}
             </div>
           </div>
+          <el-button class="btn" type="danger" @click="close">Close</el-button>
         </div>
         <div class="content">
           {{ info.content }}
@@ -42,10 +43,8 @@
       </el-card>
     </div>
     <div class="create">
-      <el-input :autosize="{ minRows: 6, maxRows: 999}" v-model="content" type="textarea" placeholder="请输入内容"></el-input>
-      <div class="btn" @click="commit">
-        提交
-      </div>
+      <el-input :autosize="{ minRows: 6, maxRows: 999}" v-model="content" type="textarea" placeholder="请输入内容" />
+      <el-button class="btn" type="success" @click="commit">提交</el-button>
     </div>
   </div>
 </template>
@@ -94,6 +93,17 @@ export default {
         console.log(data)
       })
     },
+    close() {
+      this.$store.dispatch(
+        'CloseIssue',
+        {
+          number: this.detail.number,
+          data: {
+            state: 'close'
+          }
+        }
+      )
+    },
     commit() {
       console.log(this.content)
     }
@@ -110,6 +120,7 @@ export default {
 }
 
 .user {
+  position: relative;
   display: flex;
 
   img {
@@ -131,6 +142,11 @@ export default {
     font-size: 13px;
     color: #999;
   }
+
+  .btn {
+    position: absolute;
+    right: 0;
+  }
 }
 
 .content {
@@ -151,10 +167,6 @@ export default {
   .btn {
     float: right;
     margin: 20px 10px;
-    padding: 10px 30px;
-    border-radius: 10px;
-    color: white;
-    background: #28a745;
   }
 }
 </style>
