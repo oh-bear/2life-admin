@@ -13,6 +13,10 @@ const feedback = {
         arr.push(val)
       })
       state.list = arr
+    },
+    ADD_LABEL: (state, obj) => {
+      const index = _.findIndex(state.list, val => val.id === obj.id)
+      state.list[index].labels.push({ name: obj.name, color: obj.color })
     }
   },
   actions: {

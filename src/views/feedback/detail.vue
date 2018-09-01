@@ -12,6 +12,9 @@
             <div class="name">
               <span>{{ info.name }}</span>
               <span v-for="(label, i) in detail.labels" :key="i" :style="{ background: `#${label.color}`, color: label.color === 'ededed' ? 'black' : `white` }" class="label">{{ label.name }}</span>
+              <span class="add" @click="modalShow = true">
+                <svg-icon icon-class="add"/>
+              </span>
             </div>
             <div class="date">
               {{ info.date }}
@@ -46,6 +49,15 @@
       <el-input :autosize="{ minRows: 6, maxRows: 999}" v-model="content" type="textarea" placeholder="请输入内容" />
       <el-button class="btn" type="success" @click="commit">提交</el-button>
     </div>
+    <el-dialog :visible.sync="modalShow" :before-close="handleClose" title="添加label" width="30%">
+      <div class="modal-container">
+        <el-input placeholder="请输入标签名" v-model="newLabel" clearable></el-input>
+      </div>
+      <div slot="footer">
+        <el-button @click="handleClose">取 消</el-button>
+        <el-button type="primary" @click="addLabel">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -57,7 +69,9 @@ export default {
   data() {
     return {
       comments: [],
-      content: ''
+      content: '',
+      modalShow: false,
+      newLabel: ''
     }
   },
   computed: {
@@ -92,6 +106,21 @@ export default {
         this.comments = data
         console.log(data)
       })
+    },
+    handleClose() {
+      if (!this.newLabel) {
+        this.modalShow = false
+        return
+      }
+      this.$confirm('确认关闭').then(_ => {
+        this.newLabel = ''
+        this.modalShow = false
+      })
+    },
+    addLabel() {
+      this.$store.commit('ADD_LABEL', { id: this.$route.params.id, name: this.newLabel, color: 'ededed' })
+      this.newLabel = ''
+      this.modalShow = false
     },
     close() {
       this.$store.dispatch(
@@ -132,9 +161,13 @@ export default {
   .label {
     display: inline;
     margin-left: 10px;
-    padding: 2px 5px;
+    padding: 2px 8px;
     border-radius: 5px;
     font-size: 14px;
+  }
+
+  .add {
+    margin-left: 20px;
   }
 
   .date {

@@ -95,5 +95,46 @@ export const asyncRouterMap = [
       }
     ]
   },
+  {
+    path: '/setting',
+    component: Layout,
+    meta: {
+      title: 'setting',
+      icon: 'settings',
+      roles: ['admin', 'editor']
+    },
+    children: [
+      {
+        path: '/setting/index',
+        component: () => import('@/views/setting/index'),
+        name: 'Setting',
+        meta: {
+          title: 'setting',
+          icon: 'settings',
+          roles: ['admin', 'editor']
+        }
+      },
+      {
+        path: '/setting/admin',
+        component: () => import('@/views/setting/admin/index'),
+        name: 'Admin',
+        meta: {
+          title: 'admin',
+          icon: 'user',
+          roles: ['admin']
+        }
+      },
+      {
+        path: '/setting/admin/edit/:id',
+        component: () => import('@/views/setting/admin/edit'),
+        name: 'AdminEditor',
+        meta: {
+          title: 'admin-editor',
+          roles: ['admin']
+        },
+        hidden: true
+      }
+    ]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]
