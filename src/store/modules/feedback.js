@@ -1,4 +1,4 @@
-import { getIssues, getComments, closeIssue } from '@/api/feedback'
+import { getIssues, getComments, reply, commitComment, closeIssue } from '@/api/feedback'
 import _ from 'lodash'
 
 const feedback = {
@@ -25,9 +25,15 @@ const feedback = {
       commit('SET_FEEDBACK', data)
       return data
     },
-    async GetComments({ commit }, url) {
+    async GetComments({ state }, url) {
       const { data } = await getComments(url)
       return data
+    },
+    async Commit({ commit }, obj) {
+      const { data } = await reply(obj)
+      if (data.code !== 0) return data
+      const res = await commitComment({ number: obj.number, content: obj.content })
+      return res.status === 201 ? { reply: data, commit: res.data } : false
     },
     async CloseIssue({ commit }, obj) {
       const { data } = await closeIssue(obj)

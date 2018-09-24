@@ -47,11 +47,11 @@
     </div>
     <div class="create">
       <el-input :autosize="{ minRows: 6, maxRows: 999}" v-model="content" type="textarea" placeholder="请输入内容" />
-      <el-button class="btn" type="success" @click="commit">提交</el-button>
+      <el-button class="btn" type="success" :disabled="!content" @click="commit">提交</el-button>
     </div>
     <el-dialog :visible.sync="modalShow" :before-close="handleClose" title="添加label" width="30%">
       <div class="modal-container">
-        <el-input placeholder="请输入标签名" v-model="newLabel" clearable></el-input>
+        <el-input v-model="newLabel" placeholder="请输入标签名" clearable></el-input>
       </div>
       <div slot="footer">
         <el-button @click="handleClose">取 消</el-button>
@@ -134,7 +134,29 @@ export default {
       )
     },
     commit() {
-      console.log(this.content)
+      if (!this.content) return
+      this.$store.dispatch(
+        'Commit',
+        {
+          account: 'airing',
+          password: '123456',
+          uid: Number(this.detail.body.split('![')[1].split('](http')[0]),
+          content: this.content,
+          number: this.detail.number
+        }
+      ).then(res => {
+        if (res) {
+          this.$message({
+            message: '回复成功',
+            type: 'success'
+          })
+          setTimeout(() => {
+            this.$router.go(-1)
+          }, 1000)
+        } else {
+          this.$message.error('回复失败')
+        }
+      })
     }
   }
 }
