@@ -47,7 +47,7 @@
     </div>
     <div class="create">
       <el-input :autosize="{ minRows: 6, maxRows: 999}" v-model="content" type="textarea" placeholder="请输入内容" />
-      <el-button class="btn" type="success" :disabled="!content" @click="commit">提交</el-button>
+      <el-button :disabled="!content" class="btn" type="success" @click="commit">提交</el-button>
     </div>
     <el-dialog :visible.sync="modalShow" :before-close="handleClose" title="添加label" width="30%">
       <div class="modal-container">

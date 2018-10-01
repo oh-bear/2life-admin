@@ -5,6 +5,7 @@ import errorLog from './modules/errorLog'
 import permission from './modules/permission'
 import tagsView from './modules/tagsView'
 import user from './modules/user'
+import users from './modules/users'
 import feedback from './modules/feedback'
 import getters from './getters'
 
@@ -17,6 +18,7 @@ const store = new Vuex.Store({
     permission,
     tagsView,
     user,
+    users,
     feedback
   },
   getters
